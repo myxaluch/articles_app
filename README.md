@@ -95,7 +95,7 @@ Browser (localhost:4200)
 - **Authentication** — add user accounts so authors are tied to logged-in users instead of free-text input
 - **Edit/delete** — allow editing and deleting articles and comments
 - **Pagination** — paginate the articles list for better performance with many records
-- **Production database** — replace SQLite with PostgreSQL for more enrich funcionality if needed
+- **Production database** — replace SQLite with PostgreSQL for more rich funcionality if needed
 - **WYSIWYG editor for body** - I guess, we can improve UX for authors, to allow create more complex articles
 - **Validation** - we need to valid/verify content, for possible NSFW contect and smth like that
 
