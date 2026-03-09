@@ -9,8 +9,6 @@ RUN bundle install
 
 COPY . .
 
-RUN mkdir -p db
-
 EXPOSE 9292
 
 CMD ["sh", "-c", "bundle exec rake db:migrate && bundle exec puma -C puma.rb"]
