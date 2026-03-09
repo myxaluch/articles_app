@@ -1,7 +1,7 @@
 class Article < Sequel::Model
   one_to_many :comments, order: :created_at
 
-  def to_detail_json
+  def to_json_hash
     {
       id: id,
       title: title,

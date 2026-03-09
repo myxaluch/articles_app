@@ -40,7 +40,7 @@ class App < Roda
 
             article = Article.create(title: title, body: body, author_name: author_name)
             response.status = 201
-            article.to_detail_json
+            article.to_json_hash
           end
         end
 
@@ -66,7 +66,7 @@ class App < Roda
           end
 
           r.get do
-            article.to_detail_json
+            article.to_json_hash
           end
         end
       end
