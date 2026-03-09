@@ -1,0 +1,18 @@
+require_relative "config"
+
+namespace :db do
+  desc "Run migrations"
+  task :migrate do
+    Sequel.extension :migration
+    Sequel::Migrator.run(DB, "db/migrations")
+    puts "Migrations complete"
+  end
+
+  desc "Reset database"
+  task :reset do
+    Sequel.extension :migration
+    Sequel::Migrator.run(DB, "db/migrations", target: 0)
+    Sequel::Migrator.run(DB, "db/migrations")
+    puts "Database reset complete"
+  end
+end

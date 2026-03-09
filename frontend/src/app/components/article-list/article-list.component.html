@@ -1,0 +1,74 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Articles</h1>
+    <button class="btn btn-primary" (click)="toggleForm()">
+      {{ showForm() ? 'Cancel' : 'New Article' }}
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  @if (showForm()) {
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Create Article</h5>
+        <form #articleForm="ngForm" (ngSubmit)="articleForm.valid ? createArticle() : articleForm.control.markAllAsTouched()">
+          <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-control" [(ngModel)]="newArticle.title" name="title" required
+                   #titleField="ngModel" [class.is-invalid]="titleField.invalid && titleField.touched">
+            @if (titleField.invalid && titleField.touched) {
+              <div class="invalid-feedback">Title is required</div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Author Name</label>
+            <input type="text" class="form-control" [(ngModel)]="newArticle.author_name" name="author_name" required
+                   #authorField="ngModel" [class.is-invalid]="authorField.invalid && authorField.touched">
+            @if (authorField.invalid && authorField.touched) {
+              <div class="invalid-feedback">Author name is required</div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Body</label>
+            <textarea class="form-control" rows="4" [(ngModel)]="newArticle.body" name="body" required
+                      #bodyField="ngModel" [class.is-invalid]="bodyField.invalid && bodyField.touched"></textarea>
+            @if (bodyField.invalid && bodyField.touched) {
+              <div class="invalid-feedback">Body is required</div>
+            }
+          </div>
+          <button type="submit" class="btn btn-success">Create</button>
+        </form>
+      </div>
+    </div>
+  }
+
+  @if (loading()) {
+    <p class="text-muted">Loading articles...</p>
+  } @else if (articles().length === 0) {
+    <p class="text-muted">No articles yet. Create the first one!</p>
+  } @else {
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Created</th>
+          <th>Comments</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (article of articles(); track article.id) {
+          <tr>
+            <td><a [routerLink]="['/articles', article.id]">{{ article.title }}</a></td>
+            <td>{{ article.author_name }}</td>
+            <td>{{ article.created_at | date:'mediumDate' }}</td>
+            <td>{{ article.comment_count }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

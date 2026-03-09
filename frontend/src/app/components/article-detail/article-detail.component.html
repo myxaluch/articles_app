@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="text-muted">Loading article...</p>
+  } @else if (article(); as a) {
+    <a routerLink="/" class="btn btn-outline-secondary mb-3">&larr; Back to Articles</a>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h1>{{ a.title }}</h1>
+        <p class="text-muted">By {{ a.author_name }} on {{ a.created_at | date:'mediumDate' }}</p>
+        <p class="card-text" style="white-space: pre-wrap;">{{ a.body }}</p>
+      </div>
+    </div>
+
+    <h3>Comments ({{ a.comments?.length || 0 }})</h3>
+
+    @if (a.comments?.length === 0) {
+      <p class="text-muted">No comments yet. Be the first!</p>
+    }
+
+    @for (comment of a.comments; track comment.id) {
+      <div class="card mb-2">
+        <div class="card-body">
+          <p class="card-text">{{ comment.body }}</p>
+          <small class="text-muted">By {{ comment.author_name }} on {{ comment.created_at | date:'mediumDate' }}</small>
+        </div>
+      </div>
+    }
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <h5>Add a Comment</h5>
+        <form #commentForm="ngForm" (ngSubmit)="commentForm.valid ? addComment() : commentForm.control.markAllAsTouched()">
+          <div class="mb-3">
+            <label class="form-label">Author Name</label>
+            <input type="text" class="form-control" [(ngModel)]="newComment.author_name" name="author_name" required
+                   #authorField="ngModel" [class.is-invalid]="authorField.invalid && authorField.touched">
+            @if (authorField.invalid && authorField.touched) {
+              <div class="invalid-feedback">Author name is required</div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Comment</label>
+            <textarea class="form-control" rows="3" [(ngModel)]="newComment.body" name="body" required
+                      #bodyField="ngModel" [class.is-invalid]="bodyField.invalid && bodyField.touched"></textarea>
+            @if (bodyField.invalid && bodyField.touched) {
+              <div class="invalid-feedback">Comment is required</div>
+            }
+          </div>
+          <button type="submit" class="btn btn-primary">Add Comment</button>
+        </form>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,54 @@
+<div class="container mt-4">
+  <h1>Engagement Overview</h1>
+
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="text-muted">Loading engagement data...</p>
+  } @else if (engagement(); as e) {
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card text-center">
+          <div class="card-body">
+            <h2>{{ e.total_articles }}</h2>
+            <p class="text-muted">Total Articles</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card text-center">
+          <div class="card-body">
+            <h2>{{ e.total_comments }}</h2>
+            <p class="text-muted">Total Comments</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Most Commented Articles</h3>
+    @if (e.most_commented.length === 0) {
+      <p class="text-muted">No articles yet.</p>
+    } @else {
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Article</th>
+            <th>Comments</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (article of e.most_commented; track article.id) {
+            <tr>
+              <td><a [routerLink]="['/articles', article.id]">{{ article.title }}</a></td>
+              <td>{{ article.comment_count }}</td>
+              <td>{{ article.created_at | date:'mediumDate' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</div>
